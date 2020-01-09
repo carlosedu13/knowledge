@@ -13,18 +13,18 @@ module.exports = app => {
         if (req.params.id) user.id = req.params.id
 
         try {
-            existsOrError(user.name, 'Nome não informado')
-            existsOrError(user.email, 'Email não informado')
-            existsOrError(user.password, 'Senha não informada')
-            existsOrError(user.confirmPassword, 'Confirmação da senha inválida')
-            equalsOrError(user.password, user.confirmPassword, 'Senhas divergem entre si')
+            existsOrError(user.name, 'Nome não informado.')
+            existsOrError(user.email, 'Email não informado.')
+            existsOrError(user.password, 'Senha não informada.')
+            existsOrError(user.confirmPassword, 'Confirmação da senha inválida.')
+            equalsOrError(user.password, user.confirmPassword, 'Senhas divergem entre si.')
 
             const userFromDb = await app.db('users')
                 .where({ email: user.email})
                 .first()
 
             if(!user.id){
-                notExistsOrError(userFromDb, 'Usuário já cadastrado')
+                notExistsOrError(userFromDb, 'Usuário já cadastrado.')
             }
         } catch(msg) {
             return res.status(400).send(msg)
