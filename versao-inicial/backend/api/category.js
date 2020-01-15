@@ -3,6 +3,7 @@ module.exports = app => {
 
     const save = (req, res) => {
         const category = { ...req.body }
+        
         if(req.params.id) category.id = req.params.id
 
         try {
@@ -31,17 +32,14 @@ module.exports = app => {
 
             const subcategory = await app.db('categories')
                 .where({ parentId: req.params.id })
-            
             notExistsOrError(subcategory, 'Categoria possui subcategorias.')
 
             const articles = await app.db('articles')
                 .where({ categoryId: req.params.id })
-
             notExistsOrError(articles, 'Categoria possui artigos.')
 
             const rowsDeleted = await app.db('categories')
                 .where({ id: req.params.id }).del()
-
             existsOrError(rowsDeleted, 'Categoria não foi encontrada.')
 
             res.status(204).send()
@@ -52,7 +50,7 @@ module.exports = app => {
 
     const withPath = categories => {
         const getParent = (categories, parentId) => {
-            const parent = catogories.filter(parent => parent.id === parentId)
+            const parent = categories.filter(parent => parent.id === parentId)
             return parent.length ? parent[0] : null
         }
 
